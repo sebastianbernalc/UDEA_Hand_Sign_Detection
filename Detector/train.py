@@ -11,7 +11,7 @@ detector = HandDetector(maxHands = 1)
 
 offset = 15
 imgSize = 300
-
+#hola
 # obtiene la ruta de la carpeta actual
 current_directory = os.getcwd()
 folder_A= os.path.join(current_directory, "Detector", "data", "A")

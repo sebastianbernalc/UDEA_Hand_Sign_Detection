@@ -1,3 +1,24 @@
+#--------------------------------------------------------------------------
+#------------------------ -Alfabeto Dactilológico -------------------------
+#--------------------------------------------------------------------------
+#-------------------------Coceptos básicos de PDI--------------------------
+#--------------------------------------------------------------------------
+#-------------------------Sebastian Bernal Cuaspa--------------------------
+#----------------------sebastian.bernalc@udea.edu.co-----------------------
+#--------------------------------------------------------------------------
+#-----------------------Kevin David Martinez Zapata------------------------   
+#-----------------------kevin.martinez1@udea.edu.co------------------------
+#--------------------------------------------------------------------------
+#------------------------Universidad De Antioquia--------------------------
+#-------------------------Ingenieria Electronica---------------------------
+#--------------------Procesamiento Digital De Imagenes I-------------------
+#-----------------------------Proyecto #2----------------------------------
+
+
+#--------------------------------------------------------------------------
+#--1. Inicializo el sistema -----------------------------------------------
+#--------------------------------------------------------------------------
+
 import cv2
 from cvzone.HandTrackingModule import HandDetector
 import numpy as np
@@ -6,7 +27,9 @@ from cvzone.ClassificationModule import Classifier
 import time
 import os
 
-
+#--------------------------------------------------------------------------
+#---------------------2 Configuracion del proyecto.------------------------
+#--------------------------------------------------------------------------
 
 current_directory = os.getcwd()                                                         # obtiene la ruta de la carpeta actual
 model_folder = os.path.join(current_directory, "Detector", "model", "keras_model.h5")   #Carpeta del modelo entrenado
@@ -21,15 +44,19 @@ classifier = Classifier(model_folder,labels_folder) #Modelo de aprendizaje autom
 offset = 15
 imgSize = 300
 
-
-
-counter=0
+#--------------------------------------------------------------------------
+#---------------------3 Loop principal.------------------------------------
+#--------------------------------------------------------------------------
 
 while True :
     success, img = cap.read()            #Lectura de camara y almacenamiento de variables
     imgOutuput = img.copy()              #Copia del cuadro de video leído para poder dibujar visualizaciones y resultados de detección en ella sin modificar el cuadro original.
     hands, img = detector.findHands(img) #Detectar las manos en el cuadro de video leído
 
+    #--------------------------------------------------------------------------
+    #---------------------4 detector de manos.---------------------------------
+    #--------------------------------------------------------------------------
+    
     #si se detectaron manos en el cuadro de video leído 
     if hands:
         hand = hands[0]                                                     #Se extrae la primera mano de la lista 
@@ -40,6 +67,9 @@ while True :
         imgCropShape = imgCrop.shape                                        #Se calcula la forma (dimensiones) de la imagen de la mano recortada
         aspectRatio = h/w                                                   #Se calcula el aspectRatio de la mano a partir de su altura (h) y ancho (w).
 
+        #--------------------------------------------------------------------------
+        #---------------------5 Reajuste de identificacion de manos.---------------
+        #--------------------------------------------------------------------------
         #Si la mano es más alta que ancha
         if aspectRatio > 1 :
             k = imgSize / h                                         #Se calcula una escala k que se usará para redimensionar la imagen de la mano (imgCrop) para que su altura sea igual a imgSize
@@ -61,6 +91,9 @@ while True :
             imgWhite[hGap:hGap + hCal,:] = imgResize                #Se actualiza la imagen en blanco imgWhite para agregar la imagen redimensionada de la mano (imgResize) en el centro de la imagen blanca
             prediction,index = classifier.getPrediction(imgWhite)   #Se utiliza el clasificador de gestos de mano (classifier) para predecir el gesto de la mano en la imagen blanca redimensionada.
 
+        #--------------------------------------------------------------------------
+        #---------------------6. Muestra de resultados.----------------------------
+        #--------------------------------------------------------------------------
         cv2.putText(imgOutuput, labels[index], (x, y-20), cv2.FONT_HERSHEY_COMPLEX, 2, (255, 0, 255), 2)  #se utiliza para dibujar texto en una imagen.
 
         cv2.imshow("ImageCrop",imgCrop)   #Muestra imagen recortada de la deteccion de la mano

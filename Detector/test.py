@@ -61,13 +61,13 @@ while True :
             imgWhite[hGap:hGap + hCal,:] = imgResize                #Se actualiza la imagen en blanco imgWhite para agregar la imagen redimensionada de la mano (imgResize) en el centro de la imagen blanca
             prediction,index = classifier.getPrediction(imgWhite)   #Se utiliza el clasificador de gestos de mano (classifier) para predecir el gesto de la mano en la imagen blanca redimensionada.
 
-        cv2.putText(imgOutuput, labels[index], (x, y-20), cv2.FONT_HERSHEY_COMPLEX, 2, (255, 0, 255), 2)
+        cv2.putText(imgOutuput, labels[index], (x, y-20), cv2.FONT_HERSHEY_COMPLEX, 2, (255, 0, 255), 2)  #se utiliza para dibujar texto en una imagen.
 
-        cv2.imshow("ImageCrop",imgCrop)
-        cv2.imshow("ImageWhite",imgWhite)
+        cv2.imshow("ImageCrop",imgCrop)   #Muestra imagen recortada de la deteccion de la mano
+        cv2.imshow("ImageWhite",imgWhite) #Muestra imagen redimencionada que es usada para entrenar y predecir
 
 
-    cv2.imshow("Image",imgOutuput)
+    cv2.imshow("Image",imgOutuput) #Muestra imagen completa en tiempo real
     key = cv2.waitKey(1)
 
 
